@@ -1,0 +1,10 @@
+/venv
+*.pyc
+__pycache__
+db.sqlite3
+/env
+*.env
+.vscode
+node_modules/
+static/
+SM/frontend/static/front/bundle.js
