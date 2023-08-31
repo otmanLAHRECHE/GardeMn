@@ -24,7 +24,7 @@ export default function GardeMonth(){
           <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
             <Link color="inherit" href="https://github.com/otmanLAHRECHE">
-              EPSP Djanet Garde calculator
+              EPSP Djanet Garde app
             </Link>{' '}
             -- created by otman LAHRECHE
             {'.'}
