@@ -20,7 +20,6 @@ from dateutil.relativedelta import relativedelta
 def getAllWorkers(request):
     if request.method == 'GET' and request.user.is_authenticated:
         queryset = Workers.objects.all()
-        print(queryset)
 
         source_serial = WorkerSerializer(queryset, many=True)
 
@@ -74,28 +73,21 @@ def updateWorker(request, id):
             worker_to_update.grade = grade
         if not worker_to_update.ccp == ccp:
             worker_to_update.ccp = ccp
-
-        
         worker_to_update.save()
 
-        
         return Response(status=status.HTTP_200_OK, data = {"status":"worker updated"})
     else:
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
 
-
 @api_view(['GET'])
 def getSelectedWorker(request, id):
     if request.method == 'GET' and request.user.is_authenticated:
         queryset = Workers.objects.get(id = id)
-
         source_serial = WorkerSerializer(queryset)
 
         return Response(status=status.HTTP_200_OK,data=source_serial.data)
-                
-    
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED)
     
@@ -107,6 +99,42 @@ def deleteWorker(request, id):
         return Response(status=status.HTTP_200_OK, data = {"status":"Worker deleted"})
 
   
+
+@api_view(['GET'])
+def getAllMonthsByYear(request, year):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = Month.objects.filter(year=year).order_by("-month")
+
+        source_serial = MonthSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+    
+
+
+@api_view(['POST'])
+def createNewMonth(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+
+        month = request.data.pop('month')
+        year = request.data.pop('year')
+
+        test = Month.objects.filter(month=month, year=year)
+        if(test):
+            return Response(status=status.HTTP_201_CREATED, data = {"status":"Month alredy exist"})
+        else:
+            source = Month.objects.create(month = month, year= year)
+            if source.id is not None:
+                return Response(status=status.HTTP_201_CREATED, data = {"id_worker":source.id})
+            else:
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+    
 
 
 
