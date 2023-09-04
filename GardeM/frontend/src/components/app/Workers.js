@@ -88,7 +88,6 @@ export default function Workers(){
 
    const childToParent = async(childdata) => {
     setSt(childdata);
-    console.log(childdata);
     if(childdata.operation == "edit"){
       setName("");
       setPrename("");
@@ -245,7 +244,6 @@ export default function Workers(){
 
         var test = true;
 
-
         if(name == "" || name == null){
           test = false;
           setNameError([true, "erreur sur ce champ"]);
@@ -281,7 +279,7 @@ export default function Workers(){
           };
 
           const token = localStorage.getItem("auth_token");
-          setResponse(await updateWorker(token, JSON.stringify(data)), st.id);
+          setResponse(await updateWorker(token, JSON.stringify(data), rowData.id));
         }else{
           console.log("error");
           setLoadError(true);

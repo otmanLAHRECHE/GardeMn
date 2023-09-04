@@ -47,6 +47,7 @@ export async function getAllWorkers(token){
 
 
     export async function updateWorker(token, data, id){
+      console.log("id..........", parseInt(id));
         const response = await fetch(
             '/app/api/update_worker/'+id,
             {
