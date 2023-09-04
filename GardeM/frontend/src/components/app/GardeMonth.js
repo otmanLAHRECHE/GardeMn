@@ -28,7 +28,7 @@ export default function GardeMonth(){
     const theme = useTheme;
     const navigate = useNavigate(); 
     
-    const [date, setDate] = React.useState("")
+    const [date, setDate] = React.useState(dayjs());
     
     const [dateFilter, setDateFilter] = React.useState(dayjs());
     const [dateFilterNotErr, setDateFilterNotErr] = React.useState(false);
@@ -41,6 +41,8 @@ export default function GardeMonth(){
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdate] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
+    const [loadError, setLoadError ] = React.useState(false);
+    const [response, setResponse] = React.useState("");
 
     function Copyright(props) {
         return (
@@ -85,8 +87,51 @@ export default function GardeMonth(){
       };
 
       const deleteMonthClose = () =>{
-        
+        setOpenDelete(false);
       };
+
+      const deleteConfirmation = async() =>{
+
+      };
+
+
+      React.useEffect(() => {
+  
+        if (response == "error"){
+          setResponseErrorSignal(true);
+        } else if(response != "") {
+          setResponseSuccesSignal(true);
+        }
+  
+      }, [response]);
+
+
+      React.useEffect(() => {
+
+        setLoading(true);
+        setDateFilterError([false, ""]);
+
+        const fetchData = async () => {
+          try {
+            const token = localStorage.getItem("auth_token");
+            var year = dateFilter.get('year');
+            setData(await getAllExamenOfYear(token, month, year));
+            setLoading(false);
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+
+        if (dateFilter.isValid() == false || dateFilter ==""){
+          setDateFilterError([true, "une erreur sur le champ de date"]);
+          setDateFilterNotErr(true);
+        }else{
+          fetchData();
+        }
+
+        setOpen(false);
+        setOpenUpdate(false);
+      }, [response, dateFilter]);
 
       return(
 

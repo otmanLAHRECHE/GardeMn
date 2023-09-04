@@ -6,4 +6,3 @@ db.sqlite3
 *.env
 .vscode
 node_modules/
-static/
