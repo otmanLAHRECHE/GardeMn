@@ -117,10 +117,8 @@ def getAllMonthsByYear(request, year):
 @api_view(['POST'])
 def createNewMonth(request):
     if request.method == 'POST' and request.user.is_authenticated:
-
         month = request.data.pop('month')
         year = request.data.pop('year')
-
         test = Month.objects.filter(month=month, year=year)
         if(test):
             return Response(status=status.HTTP_201_CREATED, data = {"status":"Month alredy exist"})

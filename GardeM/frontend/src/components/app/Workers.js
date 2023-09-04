@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
+import Slide from '@mui/material/Slide';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Alt from '../layouts/alert';
 
 
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
@@ -106,7 +108,7 @@ export default function Workers(){
       setRowData(await getSelectedWorker(token, childdata.id));
     
     }else{
-
+      setOpenDelete(true);
     }
   }
 
@@ -287,6 +289,16 @@ export default function Workers(){
         
       };
 
+      const deleteExamenClose = () =>{
+        setOpenDelete(false);
+      };
+
+      const deleteConfirmation = async() =>{
+        setOpenDelete(false);
+        const token = localStorage.getItem("auth_token");
+        setResponse(await deleteWorker(token, st.id)); 
+      };
+
       React.useEffect(() => {
 
         if (response == "error"){
@@ -326,7 +338,7 @@ export default function Workers(){
           setCcp(rowData.ccp);
           setGrade(rowData.grade);
           setService(rowData.service);
-          if(rowData.service == "Administarion"){
+          if(rowData.service == "Administration"){
             setServiceValue(1);
           }else if(rowData.service == "Urgences"){
             setServiceValue(2);
@@ -587,8 +599,33 @@ export default function Workers(){
 
                     
             </Dialog>
+
+
+            <Dialog open={openDelete}
+                                    TransitionComponent={Transition}
+                                    keepMounted
+                                    onClose={deleteExamenClose}
+                                    aria-describedby="alert-dialog-slide-description"
+                                  >
+                                    <DialogTitle>{"Confirmer la suppression d'un examen"}</DialogTitle>
+                                    <DialogContent>
+                                      <DialogContentText id="alert-dialog-slide-description">
+                                      Êtes-vous sûr de la décision de supprimer le travailleur ?
+                                      </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                      <Button onClick={deleteExamenClose}>Anuller</Button>
+                                      <Button onClick={deleteConfirmation}>Supprimer</Button>
+                                    </DialogActions>
+                      </Dialog>
             
             </Container>
+
+
+        {loadError ? <Alt type='error' message='Des erruers sur les données' onClose={()=> setLoadError(false)}/> : null}
+        {responseSuccesSignal ? <Alt type='success' message='Opération réussie' onClose={()=> setResponseSuccesSignal(false)}/> : null}
+        {responseErrorSignal ? <Alt type='error' message='Opération a échoué' onClose={()=> setResponseErrorSignal(false)}/> : null}
+        
 
 
         </React.Fragment>
