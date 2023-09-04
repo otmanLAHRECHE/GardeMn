@@ -86,9 +86,29 @@ export default function Workers(){
 
     const [st, setSt] = React.useState({ id: "",  operation: ""});
 
-   const childToParent = (childdata) => {
+   const childToParent = async(childdata) => {
     setSt(childdata);
     console.log(childdata);
+    if(childdata.operation == "edit"){
+      setName("");
+      setPrename("");
+      setGrade("");
+      setService(null);
+      setCcp("");
+
+      setNameError([false, ""]);
+      setPrenameError([false, ""]);
+      setGradeError([false, ""]);
+      setServiceError([false, ""]);
+      setCcpError([false, ""]);
+
+      const token = localStorage.getItem("auth_token");
+
+      setRowData(await getSelectedWorker(token, childdata.id));
+    
+    }else{
+
+    }
   }
 
     const columns = [
@@ -104,52 +124,52 @@ export default function Workers(){
      },
     ];
 
-    const handleAddRow = () =>{
-      addWorkerOpen();
-    }
-
-    const changeService = (event) => {
-      if (event.target.value == 1){
-        setService("Administration");
-        setServiceValue(1);
-
-      }else if (event.target.value == 2){
-        setService("Urgences");
-        setServiceValue(2);
-      }else if (event.target.value == 3){
-        setService("Pharmacie");
-        setServiceValue(3);
-      }else if (event.target.value == 0){
-        setService("");
-        setServiceValue(0);
-      }else if (event.target.value == 4){
-        setService("Laboratoire");
-        setServiceValue(4);
-      }else if (event.target.value == 5){
-        setService("Radiographie");
-        setServiceValue(5);
-      }else if (event.target.value == 6){
-        setService("Autre");
-        setServiceValue(6);
-      }
-  };
-
-
-  const addWorkerOpen = () =>{
-    setOpen(true);
-    setName("");
-    setPrename("");
-    setGrade("");
-    setService(null);
-    setCcp("");
-
-    setNameError([false, ""]);
-    setPrenameError([false, ""]);
-    setGradeError([false, ""]);
-    setServiceError([false, ""]);
-    setCcpError([false, ""]);
-
+      const handleAddRow = () =>{
+        addWorkerOpen();
       };
+
+      const changeService = (event) => {
+        if (event.target.value == 1){
+          setService("Administration");
+          setServiceValue(1);
+
+        }else if (event.target.value == 2){
+          setService("Urgences");
+          setServiceValue(2);
+        }else if (event.target.value == 3){
+          setService("Pharmacie");
+          setServiceValue(3);
+        }else if (event.target.value == 0){
+          setService("");
+          setServiceValue(0);
+        }else if (event.target.value == 4){
+          setService("Laboratoire");
+          setServiceValue(4);
+        }else if (event.target.value == 5){
+          setService("Radiographie");
+          setServiceValue(5);
+        }else if (event.target.value == 6){
+          setService("Autre");
+          setServiceValue(6);
+        }
+      };
+
+
+      const addWorkerOpen = () =>{
+      setOpen(true);
+      setName("");
+      setPrename("");
+      setGrade("");
+      setService(null);
+      setCcp("");
+
+      setNameError([false, ""]);
+      setPrenameError([false, ""]);
+      setGradeError([false, ""]);
+      setServiceError([false, ""]);
+      setCcpError([false, ""]);
+
+        };
 
 
       const addWorkerSave = async() =>{
@@ -196,8 +216,6 @@ export default function Workers(){
             "ccp": ccp
           };
 
-          console.log(data);
-
           const token = localStorage.getItem("auth_token");
           setResponse(await addNewWorker(token, JSON.stringify(data)));
         }else{
@@ -212,8 +230,65 @@ export default function Workers(){
       const addWorkerClose = () =>{
         setOpen(false);
       };
-    
-  
+
+
+      const updateWorkerClose = () =>{
+        setOpenUpdate(false);
+      };
+
+      const updateWorkerSave = async() =>{
+        setNameError([false, ""]);
+        setPrenameError([false, ""]);
+        setGradeError([false, ""]);
+        setServiceError([false, ""]);
+        setCcpError([false, ""]);
+
+        var test = true;
+
+
+        if(name == "" || name == null){
+          test = false;
+          setNameError([true, "erreur sur ce champ"]);
+        }
+        if(prename =="" || prename == null){
+          test = false;
+          setPrenameError([true, "champ est obligatoire"]);
+        }
+
+        if(grade =="" || grade == null){
+          test = false;
+          setGradeError([true, "champ est obligatoire"]);
+        }
+
+        if(service == "" || service ==null){
+          test = false;
+          setServiceError([true, "champ est obligatoire"]);
+        }
+
+
+        if(ccp == "" || ccp == null){
+          test = false;
+          setCcpError([true, "champ est obligatoire"]);
+        }
+
+        if(test){
+          const data = {
+            "name": name,
+            "prename": prename,
+            "service": service,
+            "grade": grade,
+            "ccp": ccp
+          };
+
+          const token = localStorage.getItem("auth_token");
+          setResponse(await updateWorker(token, JSON.stringify(data)), st.id);
+        }else{
+          console.log("error");
+          setLoadError(true);
+        }
+        
+      };
+
       React.useEffect(() => {
 
         if (response == "error"){
@@ -223,7 +298,6 @@ export default function Workers(){
         }
 
       }, [response]);
-
 
       React.useEffect(() => {
         setLoading(true);
@@ -240,6 +314,47 @@ export default function Workers(){
         setOpen(false);
         setOpenUpdate(false);
       }, [response]);
+
+      React.useEffect(() => {
+        try{
+          if (rowData == "no data"){
+            setResponseErrorSignal(true);
+          } else if(rowData != "") {
+
+          setOpenUpdate(true);
+
+          setName(rowData.name);
+          setPrename(rowData.prename);
+          setCcp(rowData.ccp);
+          setGrade(rowData.grade);
+          setService(rowData.service);
+          if(rowData.service == "Administarion"){
+            setServiceValue(1);
+          }else if(rowData.service == "Urgences"){
+            setServiceValue(2);
+          }else if(rowData.service == "Pharmacie"){
+            setServiceValue(3);
+          }else if(rowData.service == "Laboratoire"){
+            setServiceValue(4);
+          }else if(rowData.service == "Radiographie"){
+            setServiceValue(5);
+          }else if(rowData.service == "Autre"){
+            setServiceValue(6);
+          }else{
+            setServiceValue(0);
+          }
+
+          setNameError([false, ""]);
+          setPrenameError([false, ""]);
+          setGradeError([false, ""]);
+          setServiceError([false, ""]);
+          setCcpError([false, ""]);
+          }
+        }catch(e){
+          console.log(e)
+        }
+  
+      }, [rowData]);
 
 
       return(
@@ -365,6 +480,111 @@ export default function Workers(){
                               <DialogActions>
                                 <Button onClick={addWorkerClose}>Anuller</Button>
                                 <Button onClick={addWorkerSave}>Sauvgarder</Button>
+                              </DialogActions>   
+
+                    
+            </Dialog>
+
+
+            <Dialog open={openUpdate} onClose={updateWorkerClose}  maxWidth="lg" fullWidth={true}>
+                  <DialogTitle>update un travailleur</DialogTitle>
+                    <DialogContent>
+                      <Grid container spacing={2}>
+                                        <Grid item xs={4}>
+                                        <TextField
+                                                  error={nameError[0]}
+                                                  helperText={nameError[1]}
+                                                  margin="dense"
+                                                  id="Nom_de_malade"
+                                                  label="Nom de Travailleur"
+                                                  fullWidth
+                                                  variant="standard"
+                                                  value={name}
+                                                  onChange={(event) => {setName(event.target.value)}}
+                                                  required
+                                          />
+                                        
+                                        </Grid>
+
+                                        <Grid item xs={4}>
+                                        <TextField
+                                                  error={prenameError[0]}
+                                                  helperText={prenameError[1]}
+                                                  margin="dense"
+                                                  id="No_d_enregistrement"
+                                                  label="Prenom de travailleur"
+                                                  fullWidth
+                                                  value={prename}
+                                                  variant="standard"
+                                                  onChange={(event) => {setPrename(event.target.value)}}
+                                                  required
+                                          />
+                                        </Grid>
+
+                                        <Grid item xs={4}>
+                                        <TextField
+                                                  error={gradeError[0]}
+                                                  helperText={gradeError[1]}
+                                                  margin="dense"
+                                                  id="No_d_enregistrement"
+                                                  label="Grade"
+                                                  fullWidth
+                                                  value={grade}
+                                                  variant="standard"
+                                                  onChange={(event) => {setGrade(event.target.value)}}
+                                                  required
+                                          />
+                                        </Grid>
+
+                        
+                      </Grid>
+
+                      <br></br> 
+
+                      <Grid container spacing={2}>
+                                        <Grid item xs={4}>
+                                        <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
+                                          <InputLabel required htmlFor="grouped-select">HIV Test</InputLabel>
+                                            <Select defaultValue="" id="grouped-select" label="Genre" error={serviceError[0]}
+                                            onChange={changeService}
+                                            value={serviceValue}>
+                                              <MenuItem value={0}>
+                                                None
+                                              </MenuItem>
+                                              <MenuItem value={1}>Administration</MenuItem>
+                                              <MenuItem value={2}>Urgences</MenuItem>
+                                              <MenuItem value={3}>Pharmacie</MenuItem>
+                                              <MenuItem value={4}>Laboratoire</MenuItem>
+                                              <MenuItem value={5}>Radiographie</MenuItem>
+                                              <MenuItem value={6}>Autre</MenuItem>
+                                            
+
+                                            </Select>
+                                       </FormControl>  
+                                        </Grid>
+
+                                        <Grid item xs={4}>  
+                                        <TextField
+                                                  error={ccpError[0]}
+                                                  helperText={ccpError[1]}
+                                                  margin="dense"
+                                                  id="No_d_enregistrement"
+                                                  label="CCP"
+                                                  fullWidth
+                                                  value={ccp}
+                                                  variant="standard"
+                                                  onChange={(event) => {setCcp(event.target.value)}}
+                                                  required
+                                          />  
+                                        
+                                        </Grid>
+
+                        
+                      </Grid>
+                    </DialogContent>
+                              <DialogActions>
+                                <Button onClick={updateWorkerClose}>Anuller</Button>
+                                <Button onClick={updateWorkerSave}>Sauvgarder</Button>
                               </DialogActions>   
 
                     
