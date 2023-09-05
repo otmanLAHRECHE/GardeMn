@@ -19,6 +19,7 @@ import Link from '@mui/material/Link';
 
 import { useNavigate } from "react-router-dom";
 import Typography from '@mui/material/Typography';
+import ActionButtonsMain from './ActionButtonsMain';
 
 import Container from '@mui/material/Container';
 
@@ -59,12 +60,27 @@ export default function GardeMonth(){
         );
       };
 
+      const [st, setSt] = React.useState({ id: "",  operation: ""});
+
+   const childToParent = async(childdata) => {
+    setSt(childdata);
+    if(childdata.operation == "edit"){
+
+      const token = localStorage.getItem("auth_token");
+
+      setRowData(await getSelectedWorker(token, childdata.id));
+    
+    }else{
+      setOpenDelete(true);
+    }
+  }
+
       const columns = [
         { field: 'id', headerName: 'Id', width: 60, hide: true },
         { field: 'month', headerName: "MOIS", width: 120},
         { field: 'year', headerName: "ANNEE", width: 120},
         { field: 'tes_exm', headerName: "Actions", width: 450 , renderCell: (params) => (
-          <ActionButtons month_id={params.row.id} childToParent={childToParent} />
+          <ActionButtonsMain month_id={params.row.id} childToParent={childToParent} />
         ),
        },
       ];

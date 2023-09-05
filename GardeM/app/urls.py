@@ -9,6 +9,9 @@ urlpatterns = [
     path('api/create_worker/', views.createNewWorker),
     path('api/update_worker/<int:id>', views.updateWorker),
     path('api/delete_worker/<int:id>', views.deleteWorker),
-    path('api/get_all_examen_of_year/<int:year>', views.getAllMonthsByYear),
+    path('api/get_all_months_of_year/<int:year>', views.getAllMonthsByYear),
     path('api/create_month/', views.createNewMonth),
+    path('api/update_month/<int:id>', views.updateMonth),
+    path('api/delete_month/<int:id>', views.deleteMonth),
+    path('api/get_selected_month/<int:id>', views.getSelectedMonth),
 ]

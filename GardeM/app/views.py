@@ -29,8 +29,6 @@ def getAllWorkers(request):
         return Response(status=status.HTTP_401_UNAUTHORIZED)  
     
 
-
-
 @api_view(['POST'])
 def createNewWorker(request):
     if request.method == 'POST' and request.user.is_authenticated:
@@ -48,7 +46,6 @@ def createNewWorker(request):
             return Response(status=status.HTTP_201_CREATED, data = {"id_worker":source.id})
         else:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 
 @api_view(['POST'])
@@ -98,21 +95,20 @@ def deleteWorker(request, id):
         Workers.objects.filter(id=id).delete()
         return Response(status=status.HTTP_200_OK, data = {"status":"Worker deleted"})
 
-  
+
 
 @api_view(['GET'])
 def getAllMonthsByYear(request, year):
     if request.method == 'GET' and request.user.is_authenticated:
         queryset = Month.objects.filter(year=year).order_by("-month")
 
-        source_serial = MonthSerializer(queryset, many=True)
+        source_serial = MonthSerializerForTable(queryset, many=True)
 
         return Response(status=status.HTTP_200_OK,data=source_serial.data)
                 
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED)  
     
-
 
 @api_view(['POST'])
 def createNewMonth(request):
@@ -132,7 +128,46 @@ def createNewMonth(request):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
+
+@api_view(['GET'])
+def getSelectedMonth(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        queryset = Month.objects.get(id = id)
+        source_serial = MonthSerializer(queryset)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
     
+
+    
+@api_view(['POST'])
+def updateMonth(request, id):
+    if request.method == 'POST' and request.user.is_authenticated:
+
+        month = request.data.pop('month')
+        year = request.data.pop('year')
+        
+        month_to_update = Month.objects.get(id = id)
+
+        if not month_to_update.month == month:
+            month_to_update.month = month
+        if not month_to_update.year == year:
+            month_to_update.year = year
+        month_to_update.save()
+
+        return Response(status=status.HTTP_200_OK, data = {"status":"month updated"})
+    else:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+
+@api_view(['DELETE'])
+def deleteMonth(request, id):
+    if request.method == 'DELETE' and request.user.is_authenticated:
+        Month.objects.filter(id=id).delete()
+        return Response(status=status.HTTP_200_OK, data = {"status":"Month deleted"})
+
 
 
 
