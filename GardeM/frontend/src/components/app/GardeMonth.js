@@ -22,6 +22,8 @@ import Typography from '@mui/material/Typography';
 
 import Container from '@mui/material/Container';
 
+import { getAllMonthsOfYear, addNewMonth } from '../../actions/monthActions'
+
 
 
 export default function GardeMonth(){
@@ -55,7 +57,17 @@ export default function GardeMonth(){
             {'.'}
           </Typography>
         );
-      }
+      };
+
+      const columns = [
+        { field: 'id', headerName: 'Id', width: 60, hide: true },
+        { field: 'month', headerName: "MOIS", width: 120},
+        { field: 'year', headerName: "ANNEE", width: 120},
+        { field: 'tes_exm', headerName: "Actions", width: 450 , renderCell: (params) => (
+          <ActionButtons month_id={params.row.id} childToParent={childToParent} />
+        ),
+       },
+      ];
 
 
       const handleChangeFilterDate = (newValue) =>{
@@ -115,7 +127,7 @@ export default function GardeMonth(){
           try {
             const token = localStorage.getItem("auth_token");
             var year = dateFilter.get('year');
-            setData(await getAllExamenOfYear(token, month, year));
+            setData(await getAllMonthsOfYear(token, year));
             setLoading(false);
           } catch (error) {
             console.log("error", error);
@@ -137,6 +149,52 @@ export default function GardeMonth(){
 
         <React.Fragment>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+
+            <Grid container spacing={2}>
+              <Grid item xs={5}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                  <DesktopDatePicker
+                                                          views={['year']}
+                                                          label="Selectioner l'anné"
+                                                          value={dateFilter}
+                                                          onChange={handleChangeFilterDate}
+                                                          renderInput={(params) => <TextField {...params} error={dateFilterError[0]}
+                                                          helperText={dateFilterError[1]} 
+                                                          required/>}
+                                                  />
+
+                  </LocalizationProvider>
+                </Paper>
+              </Grid>
+
+
+              <Grid item xs={12}>
+              <Box sx={{ width: '100%' }}>
+                <Stack direction="row" spacing={1}>
+                <Button size="small" onClick={handleAddRow}>
+                    Ajouter mois de garde
+                </Button>
+              </Stack>
+
+              <Box sx={{ height: 1200, mt: 1 }}>
+                 <DataGrid 
+                 components={{
+                  Toolbar: GridToolbar,
+                }}
+                 rows={data} 
+                 columns={columns}
+                 rowHeight={50}
+                 pageSize={15}
+                 disableRowSelectionOnClick  />
+              </Box>
+
+            </Box>
+
+              </Grid>
+            </Grid>
+
+            
                 
 
 
