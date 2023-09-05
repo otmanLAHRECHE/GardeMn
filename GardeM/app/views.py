@@ -117,15 +117,26 @@ def createNewMonth(request):
         year = request.data.pop('year')
         test = Month.objects.filter(month=month, year=year)
         if(test):
-            return Response(status=status.HTTP_201_CREATED, data = {"status":"Month alredy exist"})
+            return Response(status=status.HTTP_208_ALREADY_REPORTED, data = {"status":"Month alredy exist"})
         else:
             source = Month.objects.create(month = month, year= year)
             if source.id is not None:
+                workers = Workers.objects.all()
+                for worker in workers:
+                    g = Garde.objects.filter(worker = worker, month = source)
+                    if not g:
+                        garde = Garde.objects.create(jn = 0, jw = 0, jf = 0, worker = worker, month = source)
+                        if garde.id is not None:
+                            print("Garde created for:")
+                            print(worker.name)
                 return Response(status=status.HTTP_201_CREATED, data = {"id_worker":source.id})
             else:
                 return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+              
     else:
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        
 
 
 

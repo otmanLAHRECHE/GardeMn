@@ -12,6 +12,8 @@ class Workers(models.Model):
     def __str__(self):
         return self.id
     
+    
+    
 
 class Month(models.Model):
     id = models.AutoField(primary_key=True)
@@ -20,6 +22,34 @@ class Month(models.Model):
 
     def __str__(self):
         return self.id
+
+    def month_word(self):
+        la = ""
+        if(self.month == 1):
+            la = "Janvier"
+        elif(self.month == 2):
+            la = "Février"
+        elif(self.month == 3):
+            la = "Mars"
+        elif(self.month == 4):
+            la = "Avrile"
+        elif(self.month == 5):
+            la = "Mai"
+        elif(self.month == 6):
+            la = "Juin"
+        elif(self.month == 7):
+            la = "Juillet"
+        elif(self.month == 8):
+            la = "Août"
+        elif(self.month == 9):
+            la = "Septembre"
+        elif(self.month == 10):
+            la = "Octobre"
+        elif(self.month == 11):
+            la = "November"
+        elif(self.month == 12):
+            la = "Décembre"
+        return la
     
 
 

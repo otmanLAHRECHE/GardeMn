@@ -21,7 +21,6 @@ export async function getAllMonthsOfYear(token, year){
   
   };
 
-
   export async function addNewMonth(token, data){
     const response = await fetch(
         '/app/api/create_month/',
@@ -38,7 +37,7 @@ export async function getAllMonthsOfYear(token, year){
     const text = await response.text();
     if (response.status === 201) {
       return JSON.parse(text);
-    } else if(response.status === 500) {
+    } else if(response.status === 208) {
       return "exist";
     }else {
       console.log("failed", text);
@@ -46,7 +45,6 @@ export async function getAllMonthsOfYear(token, year){
     }
     
     };
-
 
     export async function updateMonth(token, data, id){
       const response = await fetch(
@@ -71,7 +69,6 @@ export async function getAllMonthsOfYear(token, year){
       
       };
 
-
       export async function deleteMonth(token, id){
         const response = await fetch(
             '/app/api/delete_month/'+id,
@@ -94,7 +91,6 @@ export async function getAllMonthsOfYear(token, year){
         }
         
         };
-
 
     export async function getSelectedMonth(token, id){
   

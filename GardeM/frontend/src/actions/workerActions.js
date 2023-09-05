@@ -21,7 +21,6 @@ export async function getAllWorkers(token){
   
   };
 
-
   export async function addNewWorker(token, data){
     const response = await fetch(
         '/app/api/create_worker/',
@@ -44,7 +43,6 @@ export async function getAllWorkers(token){
     }
     
     };
-
 
     export async function updateWorker(token, data, id){
         const response = await fetch(
@@ -69,9 +67,6 @@ export async function getAllWorkers(token){
         
         };
 
-
-
-
         export async function deleteWorker(token, id){
             const response = await fetch(
                 '/app/api/delete_worker/'+id,
@@ -93,10 +88,7 @@ export async function getAllWorkers(token){
               return "error";
             }
             
-            };
-
-
-    
+          };
 
             export async function getSelectedWorker(token, id){
   
