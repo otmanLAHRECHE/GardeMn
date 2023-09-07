@@ -14,4 +14,6 @@ urlpatterns = [
     path('api/update_month/<int:id>', views.updateMonth),
     path('api/delete_month/<int:id>', views.deleteMonth),
     path('api/get_selected_month/<int:id>', views.getSelectedMonth),
+    path('api/get_all_gardes_of_month/<int:id>', views.getAllGardesOfMonth),
+    path('api/sync_workers/<int:id>', views.syncWorkers),
 ]

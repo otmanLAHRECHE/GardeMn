@@ -26,6 +26,8 @@ class MonthSerializerForTable(serializers.ModelSerializer):
 
 
 class GardeSerializer(serializers.ModelSerializer):
+    month = MonthSerializer()
+    worker = WorkerSerializer()
 
     class Meta:
         model = Garde

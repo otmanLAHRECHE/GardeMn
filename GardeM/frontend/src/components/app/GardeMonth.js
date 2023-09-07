@@ -80,8 +80,19 @@ export default function GardeMonth(){
     setSt(childdata);
     if(childdata.operation == "edit"){
         console.log("We do not need updating..");
-    }else{
+    }else if(childdata.operation == "delete"){
       setOpenDelete(true);
+    }else if(childdata.operation == "gardes"){
+        
+      console.log("id from seneder:",childdata.id)
+      navigate("/GardeDetails",{
+        state: {
+          id: childdata.id
+        }
+      });
+
+    }else{
+      
     }
   };
 
@@ -133,8 +144,6 @@ export default function GardeMonth(){
         }
 
         const token = localStorage.getItem("auth_token");
-
-        console.log(d);
         
         setResponse(await addNewMonth(token, JSON.stringify(d)));
 

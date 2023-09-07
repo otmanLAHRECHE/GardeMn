@@ -181,6 +181,37 @@ def deleteMonth(request, id):
 
 
 
+@api_view(['GET'])
+def getAllGardesOfMonth(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        month = Month.objects.get(id = id)
+        queryset = Garde.objects.filter(month = month)
+
+        source_serial = GardeSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+    
+
+@api_view(['POST'])
+def syncWorkers(request, id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        month = Month.objects.get(id = id)
+        
+        workers = Workers.objects.all()
+        for worker in workers:
+            g = Garde.objects.filter(worker = worker, month = month)
+            if not g:
+                garde = Garde.objects.create(jn = 0, jw = 0, jf = 0, worker = worker, month = month)
+                if garde.id is not None:
+                    print("Garde created for:")
+                    print(worker.name)
+        return Response(status=status.HTTP_200_OK, data = {"state":"workers synced"})
+                 
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
 
 
 
