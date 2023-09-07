@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-import { getAllGardesOfMonth, syncWorkers } from '../../actions/gardeDetailsActions';
+import { getAllGardesOfMonth, syncWorkers, saveGardes } from '../../actions/gardeDetailsActions';
 import { getSelectedMonth } from '../../actions/monthActions';
 
 
