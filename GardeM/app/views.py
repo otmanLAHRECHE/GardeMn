@@ -144,7 +144,7 @@ def createNewMonth(request):
 def getSelectedMonth(request, id):
     if request.method == 'GET' and request.user.is_authenticated:
         queryset = Month.objects.get(id = id)
-        source_serial = MonthSerializer(queryset)
+        source_serial = MonthSerializerForTable(queryset)
 
         return Response(status=status.HTTP_200_OK,data=source_serial.data)
     else :
@@ -215,3 +215,22 @@ def syncWorkers(request, id):
 
 
 
+@api_view(['POST'])
+def saveGarde(request, id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        garde = Garde.objects.get(id = id)
+        jn = request.data.pop('jn')
+        jf = request.data.pop('jf')
+        jw = request.data.pop('jw')
+        jn = int(jn)
+        jf = int(jf)
+        jw = int(jw)
+
+        garde.jn = jn
+        garde.jf = jf
+        garde.jw = jw
+        garde.save()
+
+        return Response(status=status.HTTP_200_OK, data = {"state":garde.worker.name})      
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  

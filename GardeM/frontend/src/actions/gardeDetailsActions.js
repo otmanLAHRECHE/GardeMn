@@ -44,3 +44,27 @@ export async function getAllGardesOfMonth(token, id){
     }
     
     };
+
+
+    export async function saveGardes(token, data, id){
+      const response = await fetch(
+          '/app/api/save_gardes/'+id,
+          {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Token ' +token,
+            },
+            body: data
+          }
+      );
+      const text = await response.text();
+      if (response.status === 200) {
+        return JSON.parse(text);
+      } else {
+        console.log("failed", text);
+        return "error";
+      }
+      
+      };
