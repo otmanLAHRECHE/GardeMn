@@ -4,8 +4,6 @@ import Box from '@mui/material/Box';
 import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -15,7 +13,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import clsx from 'clsx';
 import { DataGrid, GridToolbar, useGridApiRef} from '@mui/x-data-grid';
 import Alt from '../layouts/alert';
-import Link from '@mui/material/Link';
 import { useLocation } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -31,8 +28,10 @@ export default function GardeDetails(){
         { field: 'id', headerName: 'Id', width: 60, hide: true },
         { field: 'worker', headerName: "NOM ET PRENOM", width: 230, valueGetter: (params) =>
         `${params.row.worker.name || ''} ${params.row.worker.prename || ''}`},
-        { field: 'service', headerName: 'SERVICE', width: 150, valueGetter: (params) =>
+        { field: 'service', headerName: 'TYPE', width: 150, valueGetter: (params) =>
         `${params.row.worker.service || ''}` },
+        { field: 'grade', headerName: 'SERVICE', width: 150, valueGetter: (params) =>
+        `${params.row.worker.grade || ''}` },
         { field: 'jn', headerName: "JN", width: 100, editable: true},
         { field: 'jw', headerName: "JW", width: 100, editable: true},
         { field: 'jf', headerName: "JF", width: 100, editable: true},

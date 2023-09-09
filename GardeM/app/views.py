@@ -129,6 +129,8 @@ def createNewMonth(request):
                         if garde.id is not None:
                             print("Garde created for:")
                             print(worker.name)
+                            net = 0
+                            Solde.objects.create(net = net, garde = garde, month = garde.month)
                 return Response(status=status.HTTP_201_CREATED, data = {"id_worker":source.id})
             else:
                 return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -208,6 +210,8 @@ def syncWorkers(request, id):
                 if garde.id is not None:
                     print("Garde created for:")
                     print(worker.name)
+                    net = 0
+                    Solde.objects.create(net = net, garde = garde, month = garde.month)
         return Response(status=status.HTTP_200_OK, data = {"state":"workers synced"})
                  
     else :
@@ -217,6 +221,7 @@ def syncWorkers(request, id):
 
 @api_view(['POST'])
 def saveGarde(request, id):
+
     if request.method == 'POST' and request.user.is_authenticated:
         garde = Garde.objects.get(id = id)
         jn = request.data.pop('jn')
@@ -232,21 +237,28 @@ def saveGarde(request, id):
         garde.jw = jw
         garde.save()
 
-        if(garde.worker.service == "Medecin d'urgences"):
+        if(garde.worker.service == "Medecin d'urgences" or garde.worker.service == "Pharmacie"):
             jns = float(jn) * 3500.00
-            jws = float(jn) * 3800.00
-            jfs = float(jn) * 4200.00
+            jws = float(jw) * 3800.00
+            jfs = float(jf) * 4200.00
+        elif(garde.worker.service == "Aide-infirmier"):
+            jns = float(jn) * 1500.00
+            jws = float(jw) * 1800.00
+            jfs = float(jf) * 2200.00
+        elif(garde.worker.service == "Administration"):
+            jns = float(jn) * 1800.00
+            jws = float(jw) * 2100.00
+            jfs = float(jf) * 2500.00
         else:
             jns = float(jn) * 2100.00
-            jws = float(jn) * 2400.00
-            jfs = float(jn) * 2800.00
-        
+            jws = float(jw) * 2400.00
+            jfs = float(jf) * 2800.00
+
+        solde = Solde.objects.filter(garde = garde)
         net = jns + jws + jfs
         net = round(net, 2)
-        
-        print(garde.worker.name)
-        print(net)
-
+        solde.net = net
+        solde.save()
 
         if(last == False):
             return Response(status=status.HTTP_200_OK, data = {"state":garde.worker.name})      
@@ -255,3 +267,30 @@ def saveGarde(request, id):
             
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED)  
+    
+
+
+@api_view(['GET'])
+def getSoldeOfMonth(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        month = Month.objects.get(id = id)
+        queryset = Solde.objects.filter(month = month)
+
+        source_serial = SoldeSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+  
+
+
+
+
+
+
+
+
+
+
+

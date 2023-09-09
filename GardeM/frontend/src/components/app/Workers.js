@@ -116,8 +116,8 @@ export default function Workers(){
       { field: 'id', headerName: 'Id', width: 60, hide: true },
       { field: 'name', headerName: "NOM", width: 120},
       { field: 'prename', headerName: "PRENOM", width: 120},
-      { field: 'service', headerName: "SERVICE", width: 150},
-      { field: 'grade', headerName: "GRADE", width: 160},
+      { field: 'service', headerName: "TYPE", width: 150},
+      { field: 'grade', headerName: "SERVICE", width: 160},
       { field: 'ccp', headerName: "COMPTE CCP", width: 170 },
       { field: 'tes_exm', headerName: "Actions", width: 340 , renderCell: (params) => (
         <ActionButtons worker_id={params.row.id} childToParent={childToParent} />
@@ -131,7 +131,7 @@ export default function Workers(){
 
       const changeService = (event) => {
         if (event.target.value == 1){
-          setService("Administration");
+          setService("Administration_plus");
           setServiceValue(1);
 
         }else if (event.target.value == 2){
@@ -144,13 +144,13 @@ export default function Workers(){
           setService("");
           setServiceValue(0);
         }else if (event.target.value == 4){
-          setService("Laboratoire");
+          setService("Administration");
           setServiceValue(4);
         }else if (event.target.value == 5){
-          setService("Radiographie");
+          setService("Infirmier");
           setServiceValue(5);
         }else if (event.target.value == 6){
-          setService("Infirmier");
+          setService("Aide-infirmier");
           setServiceValue(6);
         }
       };
@@ -338,17 +338,17 @@ export default function Workers(){
           setCcp(rowData.ccp);
           setGrade(rowData.grade);
           setService(rowData.service);
-          if(rowData.service == "Administration"){
+          if(rowData.service == "Administration_plus"){
             setServiceValue(1);
           }else if(rowData.service == "Medecin d'urgences"){
             setServiceValue(2);
           }else if(rowData.service == "Pharmacie"){
             setServiceValue(3);
-          }else if(rowData.service == "Laboratoire"){
+          }else if(rowData.service == "Administration"){
             setServiceValue(4);
-          }else if(rowData.service == "Radiographie"){
-            setServiceValue(5);
           }else if(rowData.service == "Infirmier"){
+            setServiceValue(5);
+          }else if(rowData.service == "Aide-infirmier"){
             setServiceValue(6);
           }else{
             setServiceValue(0);
@@ -435,7 +435,7 @@ export default function Workers(){
                                                   helperText={gradeError[1]}
                                                   margin="dense"
                                                   id="No_d_enregistrement"
-                                                  label="Grade"
+                                                  label="Service"
                                                   fullWidth
                                                   variant="standard"
                                                   onChange={(event) => {setGrade(event.target.value)}}
@@ -451,18 +451,18 @@ export default function Workers(){
                       <Grid container spacing={2}>
                                         <Grid item xs={4}>
                                         <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
-                                          <InputLabel required htmlFor="grouped-select">HIV Test</InputLabel>
+                                          <InputLabel required htmlFor="grouped-select">Type</InputLabel>
                                             <Select defaultValue="" id="grouped-select" label="Genre" error={serviceError[0]}
                                             onChange={changeService}>
                                               <MenuItem value={0}>
                                                 None
                                               </MenuItem>
-                                              <MenuItem value={1}>Administration</MenuItem>
+                                              <MenuItem value={1}>Administration_plus</MenuItem>
                                               <MenuItem value={2}>Medecin d'urgences</MenuItem>
                                               <MenuItem value={3}>Pharmacie</MenuItem>
-                                              <MenuItem value={4}>Laboratoire</MenuItem>
-                                              <MenuItem value={5}>Radiographie</MenuItem>
-                                              <MenuItem value={6}>Infirmier</MenuItem>
+                                              <MenuItem value={4}>Administration</MenuItem>
+                                              <MenuItem value={5}>Infirmier</MenuItem>
+                                              <MenuItem value={6}>Aide-infirmier</MenuItem>
                                             
 
                                             </Select>
@@ -537,7 +537,7 @@ export default function Workers(){
                                                   helperText={gradeError[1]}
                                                   margin="dense"
                                                   id="No_d_enregistrement"
-                                                  label="Grade"
+                                                  label="Service"
                                                   fullWidth
                                                   value={grade}
                                                   variant="standard"
@@ -554,19 +554,19 @@ export default function Workers(){
                       <Grid container spacing={2}>
                                         <Grid item xs={4}>
                                         <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
-                                          <InputLabel required htmlFor="grouped-select">HIV Test</InputLabel>
+                                          <InputLabel required htmlFor="grouped-select">Type</InputLabel>
                                             <Select defaultValue="" id="grouped-select" label="Genre" error={serviceError[0]}
                                             onChange={changeService}
                                             value={serviceValue}>
                                               <MenuItem value={0}>
                                                 None
                                               </MenuItem>
-                                              <MenuItem value={1}>Administration</MenuItem>
+                                              <MenuItem value={1}>Administration_plus</MenuItem>
                                               <MenuItem value={2}>Medecin d'urgences</MenuItem>
                                               <MenuItem value={3}>Pharmacie</MenuItem>
-                                              <MenuItem value={4}>Laboratoire</MenuItem>
-                                              <MenuItem value={5}>Radiographie</MenuItem>
-                                              <MenuItem value={6}>Infirmier</MenuItem>
+                                              <MenuItem value={4}>Administration</MenuItem>
+                                              <MenuItem value={5}>Infirmier</MenuItem>
+                                              <MenuItem value={6}>Aide-infirmier</MenuItem>
                                             
 
                                             </Select>

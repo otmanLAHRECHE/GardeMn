@@ -69,8 +69,29 @@ class Solde(models.Model):
     id = models.AutoField(primary_key=True)
     net = models.FloatField()
     garde = models.ForeignKey(Garde, on_delete=models.CASCADE)
+    month = models.ForeignKey(Month, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.id
+    
+    def assurance(self):
+        ass_v = self.net * 0.09
+        ass_v = ass_v = round(ass_v, 2)
+        return ass_v
+
+    def m_assurance(self):
+        m_s = self.net - self.assurance
+        m_s = m_s * 0.05
+        m_s = round(m_s, 2)
+        return m_s
+
+    def taxes(self):
+        t = self.m_assurance + self.assurance
+        t = round(t, 2)
+        return t
+
+    def sld(self):
+        s = self.net - self.taxes
+        return s
 
 
