@@ -231,7 +231,24 @@ def saveGarde(request, id):
         garde.jf = jf
         garde.jw = jw
         garde.save()
-        if(last):
+
+        if(garde.worker.service == "Medecin d'urgences"):
+            jns = float(jn) * 3500.00
+            jws = float(jn) * 3800.00
+            jfs = float(jn) * 4200.00
+        else:
+            jns = float(jn) * 2100.00
+            jws = float(jn) * 2400.00
+            jfs = float(jn) * 2800.00
+        
+        net = jns + jws + jfs
+        net = round(net, 2)
+        
+        print(garde.worker.name)
+        print(net)
+
+
+        if(last == False):
             return Response(status=status.HTTP_200_OK, data = {"state":garde.worker.name})      
         else:
             return Response(status=status.HTTP_201_CREATED, data = {"state":garde.worker.name})  

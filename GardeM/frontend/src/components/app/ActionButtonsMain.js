@@ -34,10 +34,10 @@ export default function ActionButtonsMain(props) {
            
 
     <ButtonGroup variant="outlined" aria-label="outlined button group">
-        <Button startIcon={<EditCalendarIcon />} onClick={gardeEvent}>Gardes</Button>
-        <Button startIcon={<PrintIcon />} onClick={printEvent}>Imprimer</Button>
-        <Button color="success" startIcon={<ChecklistIcon />} onClick={editEvent}>Modifier</Button>
-        <Button color="error" startIcon={<DeleteIcon />} onClick={deleteEvent}>Supprimer</Button>
+        <Button startIcon={<EditCalendarIcon />} onClick={gardeEvent}>المناوبة</Button>
+        <Button startIcon={<PrintIcon />} onClick={printEvent}>طباعة</Button>
+        <Button color="success" startIcon={<ChecklistIcon />} onClick={editEvent}>بيان الدفع</Button>
+        <Button color="error" startIcon={<DeleteIcon />} onClick={deleteEvent}>حذف</Button>
       </ButtonGroup>
         </Container>
 

@@ -27,19 +27,6 @@ import { getSelectedMonth } from '../../actions/monthActions';
 
 export default function GardeDetails(){
 
-    function Copyright(props) {
-        return (
-          <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://github.com/otmanLAHRECHE">
-              EPSP Djanet Garde app
-            </Link>{' '}
-            -- created by otman LAHRECHE
-            {'.'}
-          </Typography>
-        );
-      };
-
       const columns = [
         { field: 'id', headerName: 'Id', width: 60, hide: true },
         { field: 'worker', headerName: "NOM ET PRENOM", width: 230, valueGetter: (params) =>
@@ -76,20 +63,15 @@ export default function GardeDetails(){
     const [data, setData] = React.useState([]);
     
     const [responseSuccesSignal, setResponseSuccesSignal] = React.useState(false);
-    
-    
-    const [openLoading, setOpenLoading] = React.useState(false);
     const [loadingButton, setLoadingButton] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [loadingPage, setLoadingPage] = React.useState(false);
     const [response, setResponse] = React.useState("");
+    const [responseLite, setResponseLite] = React.useState("");
     const [responseErrorSignal, setResponseErrorSignal] = React.useState(false);
 
 
-
-
     const handleSave = async() =>{
-      setName("saving...");
       let test = true;
       for(let i= 0; i< data.length; i++){
         const r = apiRef.current.getRow(data[i].id);
@@ -100,36 +82,37 @@ export default function GardeDetails(){
       }
 
       if(test){
-
-        setOpenDialogSaving(true);
-        setLoadingButton(true);
-        
+      setOpenDialogSaving(true);
         const token = localStorage.getItem("auth_token");
         let last = false;
 
         for(let i= 0; i< data.length; i++){
-          const r = apiRef.current.getRow(data[i].id);
+          const r2 = apiRef.current.getRow(data[i].id);
           if(i == data.length - 1){
             last = true;
           }
+          
 
           const d = {
-            "jn":r.jn,
-            "jw":r.jw,
-            "jf":r.jf,
+            "jn":parseInt(r2.jn),
+            "jw":parseInt(r2.jw),
+            "jf":parseInt(r2.jf),
             "last":last
           }
 
-          setResponse(await saveGardes(token, JSON.stringify(d), r.id));
+          //console.log(d);
+
+          setResponseLite(await saveGardes(token, JSON.stringify(d), r2.id));
         }
       }else{
-        setLoadingPage(false);
         setResponseErrorSignal(true);
       }
     }
 
     const handleDialogSavingClose = () =>{
       setOpenDialogSaving(false);
+      setName("saving...");
+      setLoadingButton(true);
 
     }
 
@@ -139,22 +122,29 @@ export default function GardeDetails(){
       setResponse(await syncWorkers(token, state.id));
     }
 
+    React.useEffect(() => {
+      if (responseLite == "error"){
+        setResponseErrorSignal(true);
+      } else if(responseLite == "end") {
+        setLoadingButton(false);
+        setName("saving succesfully.");
+        setResponse("success");
+      }
+
+    }, [responseLite]);
 
     React.useEffect(() => {
       setLoadingPage(false);
       if (response == "error"){
         setResponseErrorSignal(true);
-      } else if(response == "end") {
+      } else if(response != "") {
         setResponseSuccesSignal(true);
-        setLoadingButton(false);
-        setName("saving succesfully.")
       }
 
     }, [response]);
 
     React.useEffect(() => {
       setLoading(true);
-      setLoadingPage(false);
       const fetchData = async () => {
         try {
           const token = localStorage.getItem("auth_token");
@@ -259,7 +249,6 @@ export default function GardeDetails(){
               </DialogContent>
               <DialogActions>
                         <LoadingButton
-                            color="secondary"
                             onClick={handleDialogSavingClose}
                             loading={loadingButton}
                             loadingPosition="start"
@@ -273,12 +262,7 @@ export default function GardeDetails(){
 
               </Dialog>
 
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={loadingPage}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
+            
 
 
 

@@ -135,7 +135,7 @@ export default function Workers(){
           setServiceValue(1);
 
         }else if (event.target.value == 2){
-          setService("Urgences");
+          setService("Medecin d'urgences");
           setServiceValue(2);
         }else if (event.target.value == 3){
           setService("Pharmacie");
@@ -150,7 +150,7 @@ export default function Workers(){
           setService("Radiographie");
           setServiceValue(5);
         }else if (event.target.value == 6){
-          setService("Autre");
+          setService("Infirmier");
           setServiceValue(6);
         }
       };
@@ -340,7 +340,7 @@ export default function Workers(){
           setService(rowData.service);
           if(rowData.service == "Administration"){
             setServiceValue(1);
-          }else if(rowData.service == "Urgences"){
+          }else if(rowData.service == "Medecin d'urgences"){
             setServiceValue(2);
           }else if(rowData.service == "Pharmacie"){
             setServiceValue(3);
@@ -348,7 +348,7 @@ export default function Workers(){
             setServiceValue(4);
           }else if(rowData.service == "Radiographie"){
             setServiceValue(5);
-          }else if(rowData.service == "Autre"){
+          }else if(rowData.service == "Infirmier"){
             setServiceValue(6);
           }else{
             setServiceValue(0);
@@ -458,11 +458,11 @@ export default function Workers(){
                                                 None
                                               </MenuItem>
                                               <MenuItem value={1}>Administration</MenuItem>
-                                              <MenuItem value={2}>Urgences</MenuItem>
+                                              <MenuItem value={2}>Medecin d'urgences</MenuItem>
                                               <MenuItem value={3}>Pharmacie</MenuItem>
                                               <MenuItem value={4}>Laboratoire</MenuItem>
                                               <MenuItem value={5}>Radiographie</MenuItem>
-                                              <MenuItem value={6}>Autre</MenuItem>
+                                              <MenuItem value={6}>Infirmier</MenuItem>
                                             
 
                                             </Select>
@@ -562,11 +562,11 @@ export default function Workers(){
                                                 None
                                               </MenuItem>
                                               <MenuItem value={1}>Administration</MenuItem>
-                                              <MenuItem value={2}>Urgences</MenuItem>
+                                              <MenuItem value={2}>Medecin d'urgences</MenuItem>
                                               <MenuItem value={3}>Pharmacie</MenuItem>
                                               <MenuItem value={4}>Laboratoire</MenuItem>
                                               <MenuItem value={5}>Radiographie</MenuItem>
-                                              <MenuItem value={6}>Autre</MenuItem>
+                                              <MenuItem value={6}>Infirmier</MenuItem>
                                             
 
                                             </Select>

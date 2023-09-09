@@ -63,5 +63,14 @@ class Garde(models.Model):
 
     def __str__(self):
         return self.id
+    
+
+class Solde(models.Model):
+    id = models.AutoField(primary_key=True)
+    net = models.FloatField()
+    garde = models.ForeignKey(Garde, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.id
 
 
