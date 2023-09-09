@@ -222,6 +222,7 @@ def saveGarde(request, id):
         jn = request.data.pop('jn')
         jf = request.data.pop('jf')
         jw = request.data.pop('jw')
+        last = request.data.pop('last')
         jn = int(jn)
         jf = int(jf)
         jw = int(jw)
@@ -230,7 +231,10 @@ def saveGarde(request, id):
         garde.jf = jf
         garde.jw = jw
         garde.save()
-
-        return Response(status=status.HTTP_200_OK, data = {"state":garde.worker.name})      
+        if(last):
+            return Response(status=status.HTTP_200_OK, data = {"state":garde.worker.name})      
+        else:
+            return Response(status=status.HTTP_201_CREATED, data = {"state":garde.worker.name})  
+            
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED)  

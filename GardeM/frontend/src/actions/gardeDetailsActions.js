@@ -62,7 +62,9 @@ export async function getAllGardesOfMonth(token, id){
       const text = await response.text();
       if (response.status === 200) {
         return JSON.parse(text);
-      } else {
+      } else if(response.status === 201) {
+        return "end";
+      }else{
         console.log("failed", text);
         return "error";
       }

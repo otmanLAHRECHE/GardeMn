@@ -63,7 +63,7 @@ export default function GardeDetails(){
 
       const { state } = useLocation();
 
-      const [name, setName] = React.useState();
+      const [name, setName] = React.useState("saving...");
 
       
   const apiRef = useGridApiRef();
@@ -89,8 +89,7 @@ export default function GardeDetails(){
 
 
     const handleSave = async() =>{
-
-
+      setName("saving...");
       let test = true;
       for(let i= 0; i< data.length; i++){
         const r = apiRef.current.getRow(data[i].id);
@@ -100,35 +99,29 @@ export default function GardeDetails(){
         }
       }
 
-
       if(test){
 
         setOpenDialogSaving(true);
         setLoadingButton(true);
         
         const token = localStorage.getItem("auth_token");
-        let last = false
+        let last = false;
+
         for(let i= 0; i< data.length; i++){
           const r = apiRef.current.getRow(data[i].id);
           if(i == data.length - 1){
             last = true;
           }
 
-          
-          const data = {
-            "jn":parseInt(r.jn),
-            "jw":parseInt(r.jw),
-            "jf":parseInt(r.jf),
+          const d = {
+            "jn":r.jn,
+            "jw":r.jw,
+            "jf":r.jf,
             "last":last
           }
 
-          
-          //setResponse(await saveGardes(token, data, r.id));
-          
+          setResponse(await saveGardes(token, JSON.stringify(d), r.id));
         }
-        
-
-
       }else{
         setLoadingPage(false);
         setResponseErrorSignal(true);
@@ -151,8 +144,10 @@ export default function GardeDetails(){
       setLoadingPage(false);
       if (response == "error"){
         setResponseErrorSignal(true);
-      } else if(response != "") {
+      } else if(response == "end") {
         setResponseSuccesSignal(true);
+        setLoadingButton(false);
+        setName("saving succesfully.")
       }
 
     }, [response]);
@@ -259,7 +254,7 @@ export default function GardeDetails(){
               </DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  saving... {name ? name : null}
+                   {name ? name : null}
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -284,9 +279,6 @@ export default function GardeDetails(){
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
-
-
-            <Copyright sx={{ pt: 4 }} />
 
 
 
