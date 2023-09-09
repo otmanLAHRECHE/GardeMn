@@ -14,11 +14,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import LoadingButton from '@mui/lab/LoadingButton';
 import clsx from 'clsx';
 import { DataGrid, GridToolbar, useGridApiRef} from '@mui/x-data-grid';
-import Slide from '@mui/material/Slide';
 import Alt from '../layouts/alert';
 import Link from '@mui/material/Link';
 import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
@@ -65,11 +63,12 @@ export default function GardeDetails(){
 
       const { state } = useLocation();
 
+      const [name, setName] = React.useState();
+
       
   const apiRef = useGridApiRef();
 
     const theme = useTheme;
-    const navigate = useNavigate(); 
     const [month, setMonth] = React.useState();
     const [openDialogSaving, setOpenDialogSaving] = React.useState(false);
 
@@ -106,16 +105,34 @@ export default function GardeDetails(){
 
         setOpenDialogSaving(true);
         setLoadingButton(true);
+        
+        const token = localStorage.getItem("auth_token");
+        let last = false
+        for(let i= 0; i< data.length; i++){
+          const r = apiRef.current.getRow(data[i].id);
+          if(i == data.length - 1){
+            last = true;
+          }
+
+          
+          const data = {
+            "jn":parseInt(r.jn),
+            "jw":parseInt(r.jw),
+            "jf":parseInt(r.jf),
+            "last":last
+          }
+
+          
+          //setResponse(await saveGardes(token, data, r.id));
+          
+        }
+        
 
 
       }else{
         setLoadingPage(false);
         setResponseErrorSignal(true);
       }
-    }
-
-    const handleResete = () =>{
-
     }
 
     const handleDialogSavingClose = () =>{
@@ -181,9 +198,6 @@ export default function GardeDetails(){
                 <Button size="small" onClick={handleSave}>
                     Sauvgarder
                 </Button>
-                <Button size="small" onClick={handleResete}>
-                    Resete la liste
-                </Button>
                 <Button size="small" onClick={handleSync}>
                     Sync les données
                 </Button>
@@ -204,7 +218,7 @@ export default function GardeDetails(){
         },
       }}
     >
-                 <DataGrid 
+              <DataGrid 
                  components={{
                   Toolbar: GridToolbar,
                 }}
@@ -221,7 +235,7 @@ export default function GardeDetails(){
                 }}
                  disableRowSelectionOnClick  />
 
-</Box>
+      </Box>
               </Box>
 
             </Box>
@@ -245,7 +259,7 @@ export default function GardeDetails(){
               </DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  saving...
+                  saving... {name ? name : null}
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -270,6 +284,9 @@ export default function GardeDetails(){
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
+
+
+            <Copyright sx={{ pt: 4 }} />
 
 
 
