@@ -307,7 +307,8 @@ def getTotalSoldeOfMonth(request, id):
         for a in source_serial.data:
             total = float(total) + float(a["sld"])
         
-        print(total)
+        
+        total = round(total, 2)
 
         return Response(status=status.HTTP_200_OK,data ={"total":total})
                 
@@ -348,7 +349,8 @@ def getTotalSoldeOfMonthPara(request, id):
         for a in source_serial.data:
             total = float(total) + float(a["sld"])
         
-        print(total)
+        
+        total = round(total, 2)
 
         return Response(status=status.HTTP_200_OK,data ={"total":total})
                 
@@ -389,8 +391,7 @@ def getTotalSoldeOfMonthAdm(request, id):
         for a in source_serial.data:
             total = float(total) + float(a["sld"])
         
-        print(total)
-
+        total = round(total, 2)
         return Response(status=status.HTTP_200_OK,data ={"total":total})
                 
     else :
