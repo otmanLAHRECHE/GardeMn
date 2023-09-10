@@ -277,7 +277,6 @@ def saveGarde(request, id):
         return Response(status=status.HTTP_401_UNAUTHORIZED)  
     
 
-
 @api_view(['GET'])
 def getSoldeOfMonth(request, id):
     if request.method == 'GET' and request.user.is_authenticated:
