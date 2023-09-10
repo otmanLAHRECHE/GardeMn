@@ -1,25 +1,65 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import CloseIcon from '@mui/icons-material/Close';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import LoadingButton from '@mui/lab/LoadingButton';
-import clsx from 'clsx';
-import { DataGrid, GridToolbar, useGridApiRef} from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import Alt from '../layouts/alert';
 import { useLocation } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
+import { getSelectedMonth } from '../../actions/monthActions';
+import { getAllSoldesOfMonth } from '../../actions/soldeActions'
 
 export default function Solde(){
 
+    
+    const { state } = useLocation();
+
+    
+    const theme = useTheme;
+    const [month, setMonth] = React.useState();
+    const [data, setData] = React.useState([]);
+    const [responseSuccesSignal, setResponseSuccesSignal] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
+    const [response, setResponse] = React.useState("");
+    const [responseErrorSignal, setResponseErrorSignal] = React.useState(false);
+
+
+    const columns = [
+        { field: 'id', headerName: 'Id', width: 60, hide: true },
+        { field: 'work', headerName: "العامل", width: 160},
+        { field: 'net', headerName: "الخام", width: 120},
+        { field: 'assurance', headerName: 'إقتطاع الضمان %9', width: 140},
+        { field: 'm_assurance', headerName: 'إقتطاع الضريبة %5', width: 140},
+        { field: 'taxes', headerName: 'مجموع الإقتطاعات', width: 140},
+        { field: 'sld', headerName: 'صافي الدفع', width: 140},
+      ];
+
+    React.useEffect(() => {
+
+        const fetchData = async () => {
+          try {
+            const token = localStorage.getItem("auth_token");
+            setMonth(await getSelectedMonth(token, state.id));
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+        fetchData();
+      }, []);
+
+      React.useEffect(() => {
+
+        const fetchData = async () => {
+          try {
+            const token = localStorage.getItem("auth_token");
+            setData(await getAllSoldesOfMonth(token, state.id));
+          } catch (error) {
+            console.log("error", error);
+          }
+        };
+        fetchData();
+      }, []);
 
 
     return(
@@ -49,7 +89,9 @@ export default function Solde(){
 
 
 
-
+            {responseSuccesSignal ? <Alt type='success' message='Opération réussie' onClose={()=> setResponseSuccesSignal(false)}/> : null}
+            {responseErrorSignal ? <Alt type='error' message='Opération a échoué' onClose={()=> setResponseErrorSignal(false)}/> : null}
+            
             
 
 

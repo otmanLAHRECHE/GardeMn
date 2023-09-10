@@ -79,12 +79,14 @@ export default function GardeMonth(){
    const childToParent = async(childdata) => {
     setSt(childdata);
     if(childdata.operation == "edit"){
-        console.log("We do not need updating..");
+      navigate("/Solde",{
+          state: {
+            id: childdata.id
+          }
+        });
     }else if(childdata.operation == "delete"){
       setOpenDelete(true);
     }else if(childdata.operation == "gardes"){
-        
-      console.log("id from seneder:",childdata.id)
       navigate("/GardeDetails",{
         state: {
           id: childdata.id

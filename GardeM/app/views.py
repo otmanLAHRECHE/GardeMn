@@ -254,11 +254,19 @@ def saveGarde(request, id):
             jws = float(jw) * 2400.00
             jfs = float(jf) * 2800.00
 
-        solde = Solde.objects.filter(garde = garde)
-        net = jns + jws + jfs
-        net = round(net, 2)
-        solde.net = net
-        solde.save()
+        
+        soldeFilter = Solde.objects.filter(garde = garde)
+        if(soldeFilter):
+            solde = Solde.objects.get(garde = garde)
+            net = jns + jws + jfs
+            net = round(net, 2)
+            solde.net = net
+            solde.save()
+        else:
+            net = jns + jws + jfs
+            net = round(net, 2)
+            Solde.objects.create(net = net, garde = garde, month = garde.month)
+
 
         if(last == False):
             return Response(status=status.HTTP_200_OK, data = {"state":garde.worker.name})      
@@ -284,8 +292,33 @@ def getSoldeOfMonth(request, id):
         return Response(status=status.HTTP_401_UNAUTHORIZED)  
   
 
+@api_view(['GET'])
+def getTotalSoldeOfMonth(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        month = Month.objects.get(id = id)
+        queryset = Solde.objects.filter(month = month)
 
+        source_serial = SoldeSerializer(queryset, many=True)
 
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+  
+
+@api_view(['GET'])
+def getSoldeOfMonthForPrint(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        month = Month.objects.get(id = id)
+        queryset = Solde.objects.filter(month = month)
+
+        source_serial = SoldePrintSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+ 
 
 
 

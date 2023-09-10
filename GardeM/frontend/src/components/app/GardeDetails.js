@@ -16,6 +16,8 @@ import Alt from '../layouts/alert';
 import { useLocation } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { getAllGardesOfMonth, syncWorkers, saveGardes } from '../../actions/gardeDetailsActions';
 import { getSelectedMonth } from '../../actions/monthActions';
@@ -261,6 +263,12 @@ export default function GardeDetails(){
 
               </Dialog>
 
+              <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={loadingPage}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             
 
 

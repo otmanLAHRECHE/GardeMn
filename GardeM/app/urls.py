@@ -18,4 +18,6 @@ urlpatterns = [
     path('api/sync_workers/<int:id>', views.syncWorkers),
     path('api/save_gardes/<int:id>', views.saveGarde),
     path('api/get_all_soldes_of_month/<int:id>', views.getSoldeOfMonth),
+    path('api/get_total_soldes_of_month/<int:id>', views.getTotalSoldeOfMonth),
+    path('api/get_printing_soldes_of_month/<int:id>', views.getSoldeOfMonthForPrint),
 ]

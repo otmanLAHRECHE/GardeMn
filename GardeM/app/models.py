@@ -80,18 +80,41 @@ class Solde(models.Model):
         return ass_v
 
     def m_assurance(self):
-        m_s = self.net - self.assurance
+        ass_v = self.net * 0.09
+        ass_v = ass_v = round(ass_v, 2)
+        m_s = self.net - ass_v
         m_s = m_s * 0.05
         m_s = round(m_s, 2)
         return m_s
 
     def taxes(self):
-        t = self.m_assurance + self.assurance
+        
+        ass_v = self.net * 0.09
+        ass_v = ass_v = round(ass_v, 2)
+        m_s = self.net - ass_v
+        m_s = m_s * 0.05
+        m_s = round(m_s, 2)
+
+        t = m_s + ass_v
         t = round(t, 2)
         return t
 
     def sld(self):
-        s = self.net - self.taxes
+        ass_v = self.net * 0.09
+        ass_v = ass_v = round(ass_v, 2)
+        m_s = self.net - ass_v
+        m_s = m_s * 0.05
+        m_s = round(m_s, 2)
+
+        t = m_s + ass_v
+        t = round(t, 2)
+        s = self.net - t
         return s
+    
+    def work(self):
+        return self.garde.worker.name +" "+ self.garde.worker.prename
+
+    def cp(self):
+        return self.garde.worker.ccp
 
 

@@ -37,11 +37,25 @@ class GardeSerializer(serializers.ModelSerializer):
 
 class SoldeSerializer(serializers.ModelSerializer):
 
-    assurance = serializers.FloatField(source = 'assurance') 
-    m_assurance = serializers.FloatField(source = 'm_assurance') 
-    taxes = serializers.FloatField(source = 'taxes')
-    sld = serializers.FloatField(source = 'sld') 
+    assurance = serializers.FloatField() 
+    m_assurance = serializers.FloatField() 
+    taxes = serializers.FloatField()
+    sld = serializers.FloatField() 
+    work = serializers.CharField() 
 
     class Meta:
         model = Solde
-        fields = ['id', 'net', 'assurance', 'm_assurance', 'taxes', 'sld']
+        fields = ['id', 'net', 'assurance', 'm_assurance', 'taxes', 'sld', 'work']
+
+
+
+class SoldePrintSerializer(serializers.ModelSerializer):
+
+    
+    sld = serializers.FloatField() 
+    work = serializers.CharField() 
+    cp = serializers.CharField()
+
+    class Meta:
+        model = Solde
+        fields = ['id', 'work', 'cp', 'sld']
