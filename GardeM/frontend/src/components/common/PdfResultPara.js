@@ -2,7 +2,7 @@ import React from 'react';
 import { Document, Text, Page, View } from '@react-pdf/renderer';
 import { StyleSheet, Font } from '@react-pdf/renderer';
 import { getSelectedMonth } from '../../actions/monthActions'
-import { getSoldesOfMonthForPrinting, getTotalSoldesOfMonth } from '../../actions/soldeActions'
+import { getSoldesOfMonthForPrintingPara, getTotalSoldesOfMonthPara } from '../../actions/soldeActions'
 import arabic from '../../assets/fonts/arabic2.ttf'
 
 
@@ -264,7 +264,7 @@ export default function SoldeReportPara(props){
         const fetchData = async () => {
           try {
             const token = localStorage.getItem("auth_token");
-            setSoldes(await getSoldesOfMonthForPrinting(token, props.id));
+            setSoldes(await getSoldesOfMonthForPrintingPara(token, props.id));
           } catch (error) {
             console.log("error", error);
           }
@@ -277,7 +277,7 @@ export default function SoldeReportPara(props){
         const fetchData = async () => {
           try {
             const token = localStorage.getItem("auth_token");
-            setTotal(await getTotalSoldesOfMonth(token, props.id));
+            setTotal(await getTotalSoldesOfMonthPara(token, props.id));
           } catch (error) {
             console.log("error", error);
           }
@@ -286,7 +286,6 @@ export default function SoldeReportPara(props){
         fetchData()
       },[]);
 
-      console.log(total);
 
     return(
     <Document>

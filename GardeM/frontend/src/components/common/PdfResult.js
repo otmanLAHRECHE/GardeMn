@@ -294,7 +294,6 @@ export default function SoldeReport(props){
         fetchData()
       },[]);
 
-      console.log(total);
 
     return(
     <Document>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Document, Text, Page, View } from '@react-pdf/renderer';
 import { StyleSheet, Font } from '@react-pdf/renderer';
 import { getSelectedMonth } from '../../actions/monthActions'
-import { getSoldesOfMonthForPrinting, getTotalSoldesOfMonth } from '../../actions/soldeActions'
+import { getSoldesOfMonthForPrintingAdm, getTotalSoldesOfMonthAdm } from '../../actions/soldeActions'
 import arabic from '../../assets/fonts/arabic2.ttf'
 
 
@@ -39,14 +39,6 @@ function tafqeet(numIn=0, code, op={}){
   if(!scale)return nW;if(!n99)return nW+" "+scale;if(n99>2)return nW+" "+(n99>10?scale+(last?"":"ًا")
   :(sPos<3?[,"آلاف","ملايين"][sPos]:tS[sPos]+"ات"));nW=(n100?w100+((legal=="on"&&n99<3)?" "+scale:"")+SpWa:"")+scale;
   return(n99==1)?nW:nW+(last?"ا":"ان");}}}
-  //=====================================================================
-  
-  
-  
-  
-  
-  
-  
   //==================== Common ISO Currency List in Arabic ===============
   let tafqeetISOList={
   AED:{uSingle :"درهم إماراتي",uDouble:"درهمان إماراتيان",uPlural:"دراهم إماراتية",uGender:"male",
@@ -272,7 +264,7 @@ export default function SoldeReportAdm(props){
         const fetchData = async () => {
           try {
             const token = localStorage.getItem("auth_token");
-            setSoldes(await getSoldesOfMonthForPrinting(token, props.id));
+            setSoldes(await getSoldesOfMonthForPrintingAdm(token, props.id));
           } catch (error) {
             console.log("error", error);
           }
@@ -285,7 +277,7 @@ export default function SoldeReportAdm(props){
         const fetchData = async () => {
           try {
             const token = localStorage.getItem("auth_token");
-            setTotal(await getTotalSoldesOfMonth(token, props.id));
+            setTotal(await getTotalSoldesOfMonthAdm(token, props.id));
           } catch (error) {
             console.log("error", error);
           }
@@ -294,7 +286,6 @@ export default function SoldeReportAdm(props){
         fetchData()
       },[]);
 
-      console.log(total);
 
     return(
     <Document>
