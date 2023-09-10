@@ -94,6 +94,11 @@ export default function GardeMonth(){
       });
 
     }else{
+      navigate("/RaportDePeiment",{
+        state: {
+          id: childdata.id
+        }
+      });
       
     }
   };
