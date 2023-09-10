@@ -295,11 +295,21 @@ def getSoldeOfMonth(request, id):
 def getTotalSoldeOfMonth(request, id):
     if request.method == 'GET' and request.user.is_authenticated:
         month = Month.objects.get(id = id)
-        queryset = Solde.objects.filter(month = month)
+        
+        workers = Workers.objects.filter(service__in=["Medecin d'urgences", "Pharmacie"])
+        gardes = Garde.objects.filter(worker__in=workers)
+        queryset = Solde.objects.filter(month = month, garde__in=gardes)
 
-        source_serial = SoldeSerializer(queryset, many=True)
+        
+        total = 0
+        source_serial = SoldePrintSerializer(queryset, many=True)
 
-        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+        for a in source_serial.data:
+            total = float(total) + float(a["sld"])
+        
+        print(total)
+
+        return Response(status=status.HTTP_200_OK,data ={"total":total})
                 
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED)  
@@ -309,7 +319,9 @@ def getTotalSoldeOfMonth(request, id):
 def getSoldeOfMonthForPrint(request, id):
     if request.method == 'GET' and request.user.is_authenticated:
         month = Month.objects.get(id = id)
-        queryset = Solde.objects.filter(month = month)
+        workers = Workers.objects.filter(service__in=["Medecin d'urgences", "Pharmacie"])
+        gardes = Garde.objects.filter(worker__in=workers)
+        queryset = Solde.objects.filter(month = month, garde__in=gardes)
 
         source_serial = SoldePrintSerializer(queryset, many=True)
 
@@ -318,6 +330,90 @@ def getSoldeOfMonthForPrint(request, id):
     else :
         return Response(status=status.HTTP_401_UNAUTHORIZED)  
  
+
+
+@api_view(['GET'])
+def getTotalSoldeOfMonthPara(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        month = Month.objects.get(id = id)
+        
+        workers = Workers.objects.filter(service__in=["Infirmier", "Aide-infirmier"])
+        gardes = Garde.objects.filter(worker__in=workers)
+        queryset = Solde.objects.filter(month = month, garde__in=gardes)
+
+        
+        total = 0
+        source_serial = SoldePrintSerializer(queryset, many=True)
+
+        for a in source_serial.data:
+            total = float(total) + float(a["sld"])
+        
+        print(total)
+
+        return Response(status=status.HTTP_200_OK,data ={"total":total})
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+  
+
+@api_view(['GET'])
+def getSoldeOfMonthForPrintPara(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        month = Month.objects.get(id = id)
+        workers = Workers.objects.filter(service__in=["Infirmier", "Aide-infirmier"])
+        gardes = Garde.objects.filter(worker__in=workers)
+        queryset = Solde.objects.filter(month = month, garde__in=gardes)
+
+        source_serial = SoldePrintSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+ 
+
+
+@api_view(['GET'])
+def getTotalSoldeOfMonthAdm(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        month = Month.objects.get(id = id)
+        
+        workers = Workers.objects.filter(service__in=["Administration", "Administration_plus"])
+        gardes = Garde.objects.filter(worker__in=workers)
+        queryset = Solde.objects.filter(month = month, garde__in=gardes)
+
+        
+        total = 0
+        source_serial = SoldePrintSerializer(queryset, many=True)
+
+        for a in source_serial.data:
+            total = float(total) + float(a["sld"])
+        
+        print(total)
+
+        return Response(status=status.HTTP_200_OK,data ={"total":total})
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+  
+
+@api_view(['GET'])
+def getSoldeOfMonthForPrintAdm(request, id):
+    if request.method == 'GET' and request.user.is_authenticated:
+        month = Month.objects.get(id = id)
+        workers = Workers.objects.filter(service__in=["Administration", "Administration_plus"])
+        gardes = Garde.objects.filter(worker__in=workers)
+        queryset = Solde.objects.filter(month = month, garde__in=gardes)
+
+        source_serial = SoldePrintSerializer(queryset, many=True)
+
+        return Response(status=status.HTTP_200_OK,data=source_serial.data)
+                
+    else :
+        return Response(status=status.HTTP_401_UNAUTHORIZED)  
+ 
+
+
 
 
 

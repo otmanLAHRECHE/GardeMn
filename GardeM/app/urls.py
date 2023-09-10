@@ -20,4 +20,8 @@ urlpatterns = [
     path('api/get_all_soldes_of_month/<int:id>', views.getSoldeOfMonth),
     path('api/get_total_soldes_of_month/<int:id>', views.getTotalSoldeOfMonth),
     path('api/get_printing_soldes_of_month/<int:id>', views.getSoldeOfMonthForPrint),
+    path('api/get_total_soldes_of_month_para/<int:id>', views.getTotalSoldeOfMonthPara),
+    path('api/get_printing_soldes_of_month_para/<int:id>', views.getSoldeOfMonthForPrintPara),
+    path('api/get_total_soldes_of_month_adm/<int:id>', views.getTotalSoldeOfMonthAdm),
+    path('api/get_printing_soldes_of_month_adm/<int:id>', views.getSoldeOfMonthForPrintAdm),
 ]

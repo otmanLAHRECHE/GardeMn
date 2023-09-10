@@ -39,14 +39,6 @@ function tafqeet(numIn=0, code, op={}){
   if(!scale)return nW;if(!n99)return nW+" "+scale;if(n99>2)return nW+" "+(n99>10?scale+(last?"":"ًا")
   :(sPos<3?[,"آلاف","ملايين"][sPos]:tS[sPos]+"ات"));nW=(n100?w100+((legal=="on"&&n99<3)?" "+scale:"")+SpWa:"")+scale;
   return(n99==1)?nW:nW+(last?"ا":"ان");}}}
-  //=====================================================================
-  
-  
-  
-  
-  
-  
-  
   //==================== Common ISO Currency List in Arabic ===============
   let tafqeetISOList={
   AED:{uSingle :"درهم إماراتي",uDouble:"درهمان إماراتيان",uPlural:"دراهم إماراتية",uGender:"male",
@@ -123,7 +115,7 @@ function tafqeet(numIn=0, code, op={}){
   
   };
 
-export default function SoldeReport(props){
+export default function SoldeReportPara(props){
    
   const [month, setMonth] = React.useState();
   const [soldes, setSoldes] = React.useState([]);

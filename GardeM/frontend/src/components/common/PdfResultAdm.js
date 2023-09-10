@@ -123,7 +123,7 @@ function tafqeet(numIn=0, code, op={}){
   
   };
 
-export default function SoldeReport(props){
+export default function SoldeReportAdm(props){
    
   const [month, setMonth] = React.useState();
   const [soldes, setSoldes] = React.useState([]);
