@@ -84,6 +84,7 @@ export default function GardeDetails(){
 
       if(test){
       setOpenDialogSaving(true);
+      setLoadingButton(true);
         const token = localStorage.getItem("auth_token");
         let last = false;
 
